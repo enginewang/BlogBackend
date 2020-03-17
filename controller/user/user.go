@@ -22,6 +22,7 @@ func NewController() *Controller {
 
 func (c *Controller) Initialize(e echo.Echo) (err error) {
 	e.GET(BaseURL+"/all", getAllUsers, auth.IsLoggedIn, needAdminAuth)
+	e.GET(BaseURL+"/allUserInfo", getAllUsersInfo)
 	e.GET(BaseURL+"/:id", getUser, auth.IsLoggedIn, needUserAuth)
 	e.GET(BaseURL+"/username/:username/addToLikeList/:articleId", addToLikeList)
 	e.GET(BaseURL+"/username/:username/removeFromLikeList/:articleId", removeFromLikeList)
@@ -43,6 +44,20 @@ func getAllUsers(c echo.Context) (err error) {
 	fmt.Println(results)
 	return c.JSON(http.StatusOK, results)
 }
+
+
+func getAllUsersInfo(c echo.Context) (err error) {
+	collection, closeConn := db.GlobalDatabase.User()
+	defer closeConn()
+	var results []model.UserInfo
+	err = collection.Find(nil).All(&results)
+	if err != nil {
+		return err
+	}
+	fmt.Println(results)
+	return c.JSON(http.StatusOK, results)
+}
+
 
 func getUser(c echo.Context) (err error) {
 	collection, closeConn := db.GlobalDatabase.User()

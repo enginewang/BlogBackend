@@ -20,6 +20,7 @@ func NewController() *Controller {
 
 func (c *Controller) Initialize(e echo.Echo) (err error) {
 	e.GET(BaseURL+"/all", getAllArticles)
+	e.GET(BaseURL+"/indexArticleList", getIndexArticle)
 	e.GET(BaseURL+"/:id", getArticle)
 	e.GET(BaseURL+"/title/:title", getArticleByTitle)
 	e.GET(BaseURL+"/clickLove/:id", loveArticle)
@@ -45,6 +46,17 @@ func getAllArticles(c echo.Context) (err error) {
 	collection, closeConn := db.GlobalDatabase.Article()
 	defer closeConn()
 	var results []model.Article
+	err = collection.Find(nil).Sort("-pub_time").All(&results)
+	if err!=nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, results)
+}
+
+func getIndexArticle(c echo.Context) (err error) {
+	collection, closeConn := db.GlobalDatabase.Article()
+	defer closeConn()
+	var results []model.ArticleSimple
 	err = collection.Find(nil).Sort("-pub_time").All(&results)
 	if err!=nil {
 		return err

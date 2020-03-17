@@ -26,6 +26,13 @@ type User struct {
 	Extra    string        `bson:"extra" json:"extra"`
 }
 
+type UserInfo struct {
+	Id       bson.ObjectId `bson:"_id,omitempty" json:"_id,omitempty"`
+	UserName string        `bson:"username" json:"username"`
+	Avatar   string        `bson:"avatar" json:"avatar"`
+	Email    string        `bson:"email,omitempty" json:"email,omitempty"`
+}
+
 type Login struct {
 	UserName string `bson:"username" json:"username"`
 	Password string `bson:"password,omitempty" json:"password,omitempty"`
