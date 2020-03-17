@@ -28,7 +28,7 @@ func (c *Controller) Initialize(e echo.Echo) (err error) {
 	e.GET(BaseURL+"/username/:username/removeFromLikeList/:articleId", removeFromLikeList)
 	e.PUT(BaseURL+"/username/:username", updateUser, auth.IsLoggedIn, needUserAuth)
 	e.GET(BaseURL+"/username/:username", getUserByUserName, auth.IsLoggedIn, needUserAuth)
-	e.POST(BaseURL, newUser, auth.IsLoggedIn, needAdminAuth)
+	e.POST(BaseURL, newUser)
 	e.DELETE(BaseURL+"/:id", deleteUser, auth.IsLoggedIn, needUserAuth)
 	return nil
 }
