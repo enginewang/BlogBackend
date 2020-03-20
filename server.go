@@ -47,5 +47,5 @@ func (s *Server) Init() (err error) {
 }
 
 func (s *Server) StartServer ()  {
-	s.e.Logger.Fatal(s.e.Start(s.Addr))
+	s.e.Logger.Fatal(s.e.Start(":1323"))
 }

@@ -21,7 +21,7 @@ func NewController() *Controller {
 func (c *Controller) Initialize(e echo.Echo) (err error) {
 	e.GET(BaseURL+"/all", getAllArticles)
 	e.GET(BaseURL+"/indexArticleList", getIndexArticle)
-	e.GET(BaseURL+"/:id", getArticle)
+	e.GET(BaseURL+"/:id/:visit", getArticleDetail)
 	e.GET(BaseURL+"/title/:title", getArticleByTitle)
 	e.GET(BaseURL+"/clickLove/:id", loveArticle)
 	e.GET(BaseURL+"/clickCancelLove/:id", cancelLoveArticle)
@@ -64,12 +64,17 @@ func getIndexArticle(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, results)
 }
 
-func getArticle(c echo.Context) (err error) {
+func getArticleDetail(c echo.Context) (err error) {
 	collection, closeConn := db.GlobalDatabase.Article()
 	defer closeConn()
 	id := c.Param("id")
+	visit := c.Param("visit")
 	var result model.Article
 	err = collection.FindId(bson.ObjectIdHex(id)).One(&result)
+	if visit == "1" {
+		result.ReadCount++
+		err = collection.UpdateId(bson.ObjectIdHex(id), result)
+	}
 	if err!=nil {
 		return err
 	}
