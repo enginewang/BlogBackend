@@ -4,6 +4,7 @@ import (
 	"BlogBackend/controller/article"
 	"BlogBackend/controller/auth"
 	"BlogBackend/controller/comment"
+	"BlogBackend/controller/upload"
 	"BlogBackend/controller/user"
 	"echo/middleware"
 	"github.com/labstack/echo"
@@ -26,6 +27,7 @@ func (s *Server) Init() (err error) {
 	s.e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello Blog!")
 	})
+	s.e.Static("/image", "upload")
 	//g := s.e.Group("")
 	e := s.e
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -37,12 +39,10 @@ func (s *Server) Init() (err error) {
 	err = user.NewController().Initialize(*e)
 	err = comment.NewController().Initialize(*e)
 	err = auth.NewController().Initialize(*e)
+	err = upload.NewController().Initialize(*e)
 	if err != nil {
 		return err
 	}
-
-
-
 	return nil
 }
 
