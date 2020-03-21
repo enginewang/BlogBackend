@@ -25,6 +25,7 @@ func (c *Controller) Initialize(e echo.Echo) (err error) {
 
 func upload(c echo.Context) (err error) {
 	fmt.Println(c)
+	fmt.Println(c.FormFile("file"))
 	file, err := c.FormFile("file")
 	if err != nil {
 		return err
@@ -40,8 +41,9 @@ func upload(c echo.Context) (err error) {
 		return c.String(http.StatusOK, "请检查文件名是否有非法字符，上传失败")
 	} else {
 		fileName := string(nameList[0] + "-" + t.Format("20060102150405") + "." + nameList[1])
-		// Destination
+		fmt.Println(fileName)
 		dst, err := os.Create("upload/" + fileName)
+		fmt.Println(dst)
 		if err != nil {
 			return err
 		}
