@@ -27,7 +27,7 @@ func (s *Server) Init() (err error) {
 	s.e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello Blog!")
 	})
-	s.e.Static("/image", "upload")
+	s.e.Static("/image", "/root/go/src/BlogBackend/upload")
 	//g := s.e.Group("")
 	e := s.e
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
