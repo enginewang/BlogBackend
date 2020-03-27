@@ -46,7 +46,7 @@ func getAllArticles(c echo.Context) (err error) {
 	collection, closeConn := db.GlobalDatabase.Article()
 	defer closeConn()
 	var results []model.Article
-	err = collection.Find(nil).Sort("-pub_time").All(&results)
+	err = collection.Find(nil).Sort("-pubTime").All(&results)
 	if err!=nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func getIndexArticle(c echo.Context) (err error) {
 	collection, closeConn := db.GlobalDatabase.Article()
 	defer closeConn()
 	var results []model.ArticleSimple
-	err = collection.Find(nil).Sort("-pub_time").All(&results)
+	err = collection.Find(nil).Sort("-pubTime").All(&results)
 	if err!=nil {
 		return err
 	}

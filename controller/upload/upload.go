@@ -43,6 +43,7 @@ func upload(c echo.Context) (err error) {
 		fileName := string(nameList[0] + "-" + t.Format("20060102150405") + "." + nameList[1])
 		fmt.Println(fileName)
 		dst, err := os.Create("/root/go/src/BlogBackend/upload/" + fileName)
+		//dst, err := os.Create("/Users/engine/Dropbox/Codes/go/src/BlogBackend/upload/" + fileName)
 		fmt.Println(dst)
 		if err != nil {
 			return err
