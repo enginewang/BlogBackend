@@ -28,6 +28,7 @@ func (s *Server) Init() (err error) {
 		return c.String(http.StatusOK, "Hello Blog!")
 	})
 	s.e.Static("/image", "/root/go/src/BlogBackend/upload")
+	s.e.Static("/file", "/root/go/src/BlogBackend/file")
 	//g := s.e.Group("")
 	e := s.e
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
