@@ -8,7 +8,6 @@ import (
 	"BlogBackend/controller/user"
 	"echo/middleware"
 	"github.com/labstack/echo"
-	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 )
 
@@ -26,22 +25,17 @@ func NewServer(addr string) *Server {
 
 func (s *Server) Init() (err error) {
 	s.e.GET("/", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `
-			<h1>Welcome to Echo!</h1>
-			<h3>TLS certificates automatically installed from Let's Encrypt :)</h3>
-		`)
+		return c.String(http.StatusOK, "Hello Blog!")
 	})
 	s.e.Static("/image", "/root/go/src/BlogBackend/upload")
 	s.e.Static("/file", "/root/go/src/BlogBackend/file")
 	//g := s.e.Group("")
 	e := s.e
-	e.AutoTLSManager.Cache = autocert.DirCache("/var/www/.cache")
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowHeaders:     []string{"*"},
 	}))
-	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
+
 	err = article.NewController().Initialize(*e)
 	err = user.NewController().Initialize(*e)
 	err = comment.NewController().Initialize(*e)
@@ -54,6 +48,5 @@ func (s *Server) Init() (err error) {
 }
 
 func (s *Server) StartServer ()  {
-	//s.e.Logger.Fatal(s.e.Start(":1323"))
-	s.e.Logger.Fatal(s.e.StartAutoTLS(":443"))
+	s.e.Logger.Fatal(s.e.Start(":1323"))
 }
