@@ -30,6 +30,15 @@ func newDB(url string, database string) (*Database, error) {
 		session:  session,
 		database: database,
 	}
+
+	cred := &mgo.Credential{
+	Username: "root",
+	Password: "Qwert@789",
+	}
+	err = session.Login(cred)
+	if err != nil {
+		panic(err)
+	}
 	return db, nil
 }
 
